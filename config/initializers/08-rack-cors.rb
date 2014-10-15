@@ -11,7 +11,7 @@ if GlobalSetting.enable_cors
       status, headers, body = @app.call(env)
       origin = nil
       cors_origins = @global_origins || []
-      cors_origins += SiteSetting.cors_origins.split(',') if SiteSetting.cors_origins
+      cors_origins += SiteSetting.cors_origins.split('|') if SiteSetting.cors_origins
 
       if cors_origins
         if origin = env['HTTP_ORIGIN']
@@ -26,5 +26,5 @@ if GlobalSetting.enable_cors
     end
   end
 
-  Rails.configuration.middleware.insert_after RailsMultisite::ConnectionManagement, Discourse::Cors
+  Rails.configuration.middleware.use Discourse::Cors
 end
